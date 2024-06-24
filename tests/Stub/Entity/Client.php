@@ -18,6 +18,13 @@ class Client extends BaseClient
         $this->randomId = $publicId;
     }
 
+    public function setPublicId(string $publicId): self
+    {
+        $this->randomId = $publicId;
+
+        return $this;
+    }
+
     public function getPublicId(): string
     {
         return $this->randomId;

@@ -8,6 +8,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 interface ClientInterface extends UserInterface
 {
+    public function setPublicId(string $publicId): self;
+
     public function getPublicId(): string;
 
     public function setSecret(?string $secret): self;

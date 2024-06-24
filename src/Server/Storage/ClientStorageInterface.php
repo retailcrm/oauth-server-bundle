@@ -8,7 +8,7 @@ use OAuth\Model\ClientInterface;
 
 interface ClientStorageInterface
 {
-    public function createClient(): ClientInterface;
+    public function createClient(string $publicId, ?string $secret): ClientInterface;
 
     public function updateClient(ClientInterface $client): void;
 

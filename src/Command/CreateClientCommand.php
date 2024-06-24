@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace OAuth\Command;
 
 use OAuth\Server\Storage\ClientStorageInterface;
+use OAuth\Utils\Random;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -52,7 +53,7 @@ class CreateClientCommand extends Command
 
         $io->title('Client Credentials');
 
-        $client = $this->clientStorage->createClient();
+        $client = $this->clientStorage->createClient(Random::generateToken(), Random::generateToken());
 
         $client->setRedirectUris($input->getOption('redirect-uri'));
         $client->setGrantTypes($input->getOption('grant-type'));

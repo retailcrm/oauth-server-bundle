@@ -7,17 +7,16 @@ namespace OAuth\Tests\Stub\Repository;
 use OAuth\Doctrine\Repository\ClientRepositoryInterface;
 use OAuth\Model\ClientInterface;
 use OAuth\Tests\Stub\Entity\Client;
-use OAuth\Utils\Random;
 
 class ClientRepositoryStub implements ClientRepositoryInterface
 {
     /** @var array<string, ClientInterface> */
     private array $tokens = [];
 
-    public function createClient(): ClientInterface
+    public function createClient(string $publicId, ?string $secret): ClientInterface
     {
-        $client = new Client(Random::generateToken());
-        $client->setSecret(Random::generateToken());
+        $client = new Client($publicId);
+        $client->setSecret($secret);
 
         $this->tokens[$client->getPublicId()] = $client;
 

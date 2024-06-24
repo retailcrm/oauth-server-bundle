@@ -26,9 +26,9 @@ class ClientStorage implements ClientStorageInterface
         $this->repository = $repository;
     }
 
-    public function createClient(): ClientInterface
+    public function createClient(string $publicId, ?string $secret): ClientInterface
     {
-        return $this->repository->createClient();
+        return $this->repository->createClient($publicId, $secret);
     }
 
     public function updateClient(ClientInterface $client): void

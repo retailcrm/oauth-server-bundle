@@ -37,4 +37,9 @@ class OAuthServerExtension extends Extension
         $loader->load('command.php');
         $loader->load('security.php');
     }
+
+    public function getAlias(): string
+    {
+        return 'oauth_server';
+    }
 }
