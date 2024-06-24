@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace OAuth\Event;
 
+use OAuth\Server\GrantExtension\Grant;
+
 class AfterGrantAccessEvent
 {
     public function __construct(
         private readonly string $grantType,
-        private readonly array $stored
+        private readonly Grant $grant,
     ) {
     }
 
@@ -17,8 +19,8 @@ class AfterGrantAccessEvent
         return $this->grantType;
     }
 
-    public function getStored(): array
+    public function getGrant(): Grant
     {
-        return $this->stored;
+        return $this->grant;
     }
 }

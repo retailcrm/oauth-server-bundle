@@ -154,6 +154,7 @@ class Handler implements HandlerInterface
         ];
 
         $input = filter_var_array($inputData, $filters);
+        $input += $inputData;
 
         if (!$input['grant_type']) {
             throw new OAuthServerException(Response::HTTP_BAD_REQUEST, ErrorCode::ERROR_INVALID_REQUEST, 'Invalid grant_type parameter or parameter missing');
@@ -212,11 +213,7 @@ class Handler implements HandlerInterface
             ),
         };
 
-        $stored = [
-            'scope' => $this->config->getVariable(Config::CONFIG_SUPPORTED_SCOPES),
-        ];
-
-        $this->eventDispatcher->dispatch(new AfterGrantAccessEvent($input['grant_type'], $stored));
+        $this->eventDispatcher->dispatch(new AfterGrantAccessEvent($input['grant_type'], $grant));
 
         $scope = $grant->getScope();
         if ($input['scope']) {
