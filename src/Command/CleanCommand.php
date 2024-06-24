@@ -16,6 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(
     name: 'oauth-server:clean',
     description: 'Clean expired tokens.',
+    aliases: ['fos:oauth-server:clean'],
 )]
 class CleanCommand extends Command
 {
