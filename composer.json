@@ -1,7 +1,7 @@
 {
   "name": "retailcrm/oauth-server-bundle",
   "type": "library",
-  "license": "proprietary",
+  "license": "MIT",
   "description": "OAuth Server Bundle",
   "require": {
     "php": ">=8.1",
