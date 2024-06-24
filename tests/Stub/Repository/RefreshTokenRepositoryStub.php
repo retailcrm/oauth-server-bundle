@@ -19,17 +19,17 @@ class RefreshTokenRepositoryStub implements RefreshTokenRepositoryInterface
         return $this->tokens[$token] ?? null;
     }
 
-    public function createRefreshToke(ClientInterface $client): RefreshTokenInterface
+    public function createRefreshToken(ClientInterface $client): RefreshTokenInterface
     {
         return new RefreshToken($client);
     }
 
-    public function updateRefreshToke(RefreshTokenInterface $token): void
+    public function updateRefreshToken(RefreshTokenInterface $token): void
     {
         $this->tokens[$token->getToken()] = $token;
     }
 
-    public function deleteRefreshToke(RefreshTokenInterface $token): void
+    public function deleteRefreshToken(RefreshTokenInterface $token): void
     {
         unset($this->tokens[$token->getToken()]);
     }

@@ -11,9 +11,9 @@ interface RefreshTokenRepositoryInterface extends DeleteExpiredInterface
 {
     public function findByToken(string $token): ?RefreshTokenInterface;
 
-    public function createRefreshToke(ClientInterface $client): RefreshTokenInterface;
+    public function createRefreshToken(ClientInterface $client): RefreshTokenInterface;
 
-    public function updateRefreshToke(RefreshTokenInterface $token): void;
+    public function updateRefreshToken(RefreshTokenInterface $token): void;
 
-    public function deleteRefreshToke(RefreshTokenInterface $token): void;
+    public function deleteRefreshToken(RefreshTokenInterface $token): void;
 }
