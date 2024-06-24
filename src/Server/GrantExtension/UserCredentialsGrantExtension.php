@@ -24,7 +24,7 @@ class UserCredentialsGrantExtension implements GrantExtensionInterface
     ) {
     }
 
-    public function checkGrantExtension(ClientInterface $client, Config $config, string $grantType, array $input, array $headers): Grant
+    public function checkGrantExtension(ClientInterface $client, Config $config, string $grantType, array $input): Grant
     {
         if (!$input['username'] || !$input['password']) {
             throw new OAuthServerException(Response::HTTP_BAD_REQUEST, ErrorCode::ERROR_INVALID_REQUEST, 'Missing parameters. "username" and "password" required');

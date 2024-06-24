@@ -23,7 +23,6 @@ use OAuth\Server\Storage\AuthCodeStorageInterface;
 use OAuth\Server\Storage\ClientStorageInterface;
 use OAuth\Server\Storage\RefreshTokenStorageInterface;
 use OAuth\Server\TokenGenerator\TokenGeneratorInterface;
-use OAuth\Utils\ClientCredentials;
 use OAuth\Utils\RedirectUri;
 use OAuth\Utils\Uri;
 use Symfony\Component\HttpFoundation\Request;
@@ -148,11 +147,6 @@ class Handler implements HandlerInterface
             $inputData = $request->query->all();
         }
 
-        $authHeaders = [
-            'PHP_AUTH_USER' => $request->server->get('PHP_AUTH_USER'),
-            'PHP_AUTH_PW' => $request->server->get('PHP_AUTH_PW'),
-        ];
-
         $input = filter_var_array($inputData, $filters);
         $input += $inputData;
 
@@ -160,14 +154,16 @@ class Handler implements HandlerInterface
             throw new OAuthServerException(Response::HTTP_BAD_REQUEST, ErrorCode::ERROR_INVALID_REQUEST, 'Invalid grant_type parameter or parameter missing');
         }
 
-        [$clientId, $clientSecret] = ClientCredentials::get($input, $authHeaders);
+        if (empty($input['client_id'])) {
+            throw new OAuthServerException(Response::HTTP_BAD_REQUEST, ErrorCode::ERROR_INVALID_CLIENT, 'Client id was not found in the body');
+        }
 
-        $client = $this->clientStorage->getClient($clientId);
+        $client = $this->clientStorage->getClient($input['client_id']);
         if (!$client) {
             throw new OAuthServerException(Response::HTTP_BAD_REQUEST, ErrorCode::ERROR_INVALID_CLIENT, 'The client credentials are invalid');
         }
 
-        if ($client->getSecret() && $client->getSecret() !== $clientSecret) {
+        if ($client->getSecret() && $client->getSecret() !== ($input['client_secret'] ?? null)) {
             throw new OAuthServerException(Response::HTTP_BAD_REQUEST, ErrorCode::ERROR_INVALID_CLIENT, 'The client credentials are invalid');
         }
 
@@ -181,35 +177,30 @@ class Handler implements HandlerInterface
                 $this->config,
                 self::GRANT_TYPE_AUTH_CODE,
                 $input,
-                $authHeaders
             ),
             self::GRANT_TYPE_USER_CREDENTIALS => $this->userCredentialsGrantExtension->checkGrantExtension(
                 $client,
                 $this->config,
                 self::GRANT_TYPE_USER_CREDENTIALS,
                 $input,
-                $authHeaders
             ),
             self::GRANT_TYPE_CLIENT_CREDENTIALS => $this->clientCredentialsGrantExtension->checkGrantExtension(
                 $client,
                 $this->config,
                 self::GRANT_TYPE_CLIENT_CREDENTIALS,
                 $input,
-                $authHeaders
             ),
             self::GRANT_TYPE_REFRESH_TOKEN => $this->refreshTokenGrantExtension->checkGrantExtension(
                 $client,
                 $this->config,
                 self::GRANT_TYPE_REFRESH_TOKEN,
                 $input,
-                $authHeaders
             ),
             default => $this->customGrantExtension->checkGrantExtension(
                 $client,
                 $this->config,
                 $input['grant_type'],
                 $input,
-                $authHeaders
             ),
         };
 

@@ -570,7 +570,7 @@ class HandlerTest extends TestCase
         ;
 
         $custom = new class() implements GrantExtensionInterface {
-            public function checkGrantExtension(ClientInterface $client, Config $config, string $grantType, array $input, array $headers): Grant
+            public function checkGrantExtension(ClientInterface $client, Config $config, string $grantType, array $input): Grant
             {
                 return new Grant(null, null);
             }

@@ -29,7 +29,7 @@ class CustomGrantExtension implements GrantExtensionInterface
         return $this->extensions;
     }
 
-    public function checkGrantExtension(ClientInterface $client, Config $config, string $grantType, array $input, array $headers): Grant
+    public function checkGrantExtension(ClientInterface $client, Config $config, string $grantType, array $input): Grant
     {
         if (!str_starts_with($input['grant_type'], 'urn:') && !filter_var($input['grant_type'], FILTER_VALIDATE_URL)) {
             throw new OAuthServerException(
@@ -48,6 +48,6 @@ class CustomGrantExtension implements GrantExtensionInterface
             );
         }
 
-        return $extension->checkGrantExtension($client, $config, $grantType, $input, $headers);
+        return $extension->checkGrantExtension($client, $config, $grantType, $input);
     }
 }

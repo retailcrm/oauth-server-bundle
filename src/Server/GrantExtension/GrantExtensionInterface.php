@@ -13,5 +13,5 @@ interface GrantExtensionInterface
      * @see http://tools.ietf.org/html/draft-ietf-oauth-v2-20#section-1.4.5
      * @see http://tools.ietf.org/html/draft-ietf-oauth-v2-20#section-4.2
      */
-    public function checkGrantExtension(ClientInterface $client, Config $config, string $grantType, array $input, array $headers): Grant;
+    public function checkGrantExtension(ClientInterface $client, Config $config, string $grantType, array $input): Grant;
 }

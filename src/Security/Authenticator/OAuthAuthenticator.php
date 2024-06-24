@@ -47,18 +47,17 @@ class OAuthAuthenticator extends AbstractAuthenticator
             $accessToken = $this->handler->verifyAccessToken($tokenString);
 
             $user = $accessToken->getUser();
-
-            if (null !== $user) {
-                try {
-                    $this->userChecker->checkPreAuth($user);
-                } catch (AccountStatusException $e) {
-                    throw new OAuthAuthenticateException(Response::HTTP_UNAUTHORIZED, Handler::TOKEN_TYPE_BEARER, $this->config->getVariable(Config::CONFIG_WWW_REALM), 'access_denied', $e->getMessage());
-                }
+            if (null === $user) {
+                throw new OAuthAuthenticateException(Response::HTTP_UNAUTHORIZED, Handler::TOKEN_TYPE_BEARER, $this->config->getVariable(Config::CONFIG_WWW_REALM), 'access_denied', 'User not found');
             }
 
-            $roles = (null !== $user) ? $user->getRoles() : [];
+            try {
+                $this->userChecker->checkPreAuth($user);
+            } catch (AccountStatusException $e) {
+                throw new OAuthAuthenticateException(Response::HTTP_UNAUTHORIZED, Handler::TOKEN_TYPE_BEARER, $this->config->getVariable(Config::CONFIG_WWW_REALM), 'access_denied', $e->getMessage());
+            }
 
-            $accessTokenBadge = new AccessTokenBadge($accessToken, $roles);
+            $accessTokenBadge = new AccessTokenBadge($accessToken, $user->getRoles());
 
             return new SelfValidatingPassport(new UserBadge($user->getUserIdentifier()), [$accessTokenBadge]);
         } catch (OAuthServerException $e) {
