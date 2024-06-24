@@ -33,7 +33,7 @@ class AuthCodeStorage implements AuthCodeStorageInterface
         return $this->repository->findByCode($code);
     }
 
-    public function createAuthCode(string $code, ClientInterface $client, ?UserInterface $user, string $redirectUri, int $expires, ?string $scope = null): void
+    public function createAuthCode(string $code, ClientInterface $client, ?UserInterface $user, string $redirectUri, int $expires, ?string $scope = null): AuthCodeInterface
     {
         $authCode = $this->repository->createAuthCode($client);
 
@@ -47,6 +47,8 @@ class AuthCodeStorage implements AuthCodeStorageInterface
         ;
 
         $this->repository->updateAuthCode($authCode);
+
+        return $authCode;
     }
 
     public function markAuthCodeAsUsed(string $code): void

@@ -11,6 +11,7 @@ use OAuth\Doctrine\Storage\AuthCodeStorage;
 use OAuth\Doctrine\Storage\ClientStorage;
 use OAuth\Doctrine\Storage\RefreshTokenStorage;
 use OAuth\Security\Authenticator\OAuthAuthenticator;
+use OAuth\Security\EntryPoint\OAuthEntryPoint;
 use OAuth\Server\BearerToken\ChainExtractor;
 use OAuth\Server\BearerToken\FormExtractor;
 use OAuth\Server\BearerToken\HeaderExtractor;
@@ -22,6 +23,11 @@ use OAuth\Server\GrantExtension\CustomGrantExtension;
 use OAuth\Server\GrantExtension\RefreshTokenGrantExtension;
 use OAuth\Server\GrantExtension\UserCredentialsGrantExtension;
 use OAuth\Server\Handler;
+use OAuth\Server\HandlerInterface;
+use OAuth\Server\Storage\AccessTokenStorageInterface;
+use OAuth\Server\Storage\AuthCodeStorageInterface;
+use OAuth\Server\Storage\ClientStorageInterface;
+use OAuth\Server\Storage\RefreshTokenStorageInterface;
 use OAuth\Server\TokenGenerator\MtRandTokenGenerator;
 use OAuth\Tests\Stub\ContainerTrait;
 use OAuth\Tests\Stub\Entity\AccessToken;
@@ -57,6 +63,11 @@ class OAuthServerExtensionTest extends TestCase
         $this->assertInstanceOf(AuthCodeStorage::class, $container->get(AuthCodeStorage::class));
         $this->assertInstanceOf(ClientStorage::class, $container->get(ClientStorage::class));
 
+        $this->assertInstanceOf(AccessTokenStorage::class, $container->get(AccessTokenStorageInterface::class));
+        $this->assertInstanceOf(RefreshTokenStorage::class, $container->get(RefreshTokenStorageInterface::class));
+        $this->assertInstanceOf(AuthCodeStorage::class, $container->get(AuthCodeStorageInterface::class));
+        $this->assertInstanceOf(ClientStorage::class, $container->get(ClientStorageInterface::class));
+
         $this->assertInstanceOf(AuthCodeGrantExtension::class, $container->get(AuthCodeGrantExtension::class));
         $this->assertInstanceOf(ClientCredentialsGrantExtension::class, $container->get(ClientCredentialsGrantExtension::class));
         $this->assertInstanceOf(RefreshTokenGrantExtension::class, $container->get(RefreshTokenGrantExtension::class));
@@ -64,10 +75,12 @@ class OAuthServerExtensionTest extends TestCase
         $this->assertInstanceOf(CustomGrantExtension::class, $container->get(CustomGrantExtension::class));
 
         $this->assertInstanceOf(Handler::class, $container->get(Handler::class));
+        $this->assertInstanceOf(Handler::class, $container->get(HandlerInterface::class));
 
         $this->assertInstanceOf(CleanCommand::class, $container->get(CleanCommand::class));
         $this->assertInstanceOf(CreateClientCommand::class, $container->get(CreateClientCommand::class));
 
+        $this->assertInstanceOf(OAuthEntryPoint::class, $container->get(OAuthEntryPoint::class));
         $this->assertInstanceOf(OAuthAuthenticator::class, $container->get(OAuthAuthenticator::class));
     }
 }

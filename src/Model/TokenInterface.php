@@ -20,6 +20,8 @@ interface TokenInterface
 
     public function getExpiresAt(): ?int;
 
+    public function getExpiresIn(): ?int;
+
     public function hasExpired(): bool;
 
     public function setToken(string $token): self;

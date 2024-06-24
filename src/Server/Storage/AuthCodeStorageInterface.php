@@ -12,7 +12,7 @@ interface AuthCodeStorageInterface extends DeleteExpiredStorageInterface
 {
     public function getAuthCode(string $code): ?AuthCodeInterface;
 
-    public function createAuthCode(string $code, ClientInterface $client, ?UserInterface $user, string $redirectUri, int $expires, ?string $scope = null): void;
+    public function createAuthCode(string $code, ClientInterface $client, ?UserInterface $user, string $redirectUri, int $expires, ?string $scope = null): AuthCodeInterface;
 
     public function markAuthCodeAsUsed(string $code): void;
 }

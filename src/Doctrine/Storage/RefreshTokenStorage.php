@@ -33,7 +33,7 @@ class RefreshTokenStorage implements RefreshTokenStorageInterface
         return $this->repository->findByToken($refreshToken);
     }
 
-    public function createRefreshToken(string $refreshToken, ClientInterface $client, ?UserInterface $user, int $expires, ?string $scope = null): void
+    public function createRefreshToken(string $refreshToken, ClientInterface $client, ?UserInterface $user, int $expires, ?string $scope = null): RefreshTokenInterface
     {
         $token = $this->repository->createRefreshToke($client);
         $token
@@ -44,6 +44,8 @@ class RefreshTokenStorage implements RefreshTokenStorageInterface
         ;
 
         $this->repository->updateRefreshToke($token);
+
+        return $token;
     }
 
     public function unsetRefreshToken(string $refreshToken): void

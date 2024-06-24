@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use OAuth\Server\Config;
 use OAuth\Server\Handler;
+use OAuth\Server\HandlerInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
@@ -45,5 +46,6 @@ return static function (ContainerConfigurator $container): void {
             service('oauth_server.config'),
         ])
         ->alias(Handler::class, 'oauth_server.handler')
+        ->alias(HandlerInterface::class, 'oauth_server.handler')
     ;
 };

@@ -33,7 +33,7 @@ class AccessTokenStorage implements AccessTokenStorageInterface
         return $this->repository->findByToken($token);
     }
 
-    public function createAccessToken(string $oauthToken, ClientInterface $client, ?UserInterface $user, int $expires, ?string $scope = null): void
+    public function createAccessToken(string $oauthToken, ClientInterface $client, ?UserInterface $user, int $expires, ?string $scope = null): AccessTokenInterface
     {
         $token = $this->repository->createAccessToken($client);
 
@@ -45,6 +45,8 @@ class AccessTokenStorage implements AccessTokenStorageInterface
         ;
 
         $this->repository->updateAccessToken($token);
+
+        return $token;
     }
 
     public function deleteExpired(): int

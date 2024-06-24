@@ -12,5 +12,5 @@ interface AccessTokenStorageInterface extends DeleteExpiredStorageInterface
 {
     public function getAccessToken(string $token): ?AccessTokenInterface;
 
-    public function createAccessToken(string $oauthToken, ClientInterface $client, ?UserInterface $user, int $expires, ?string $scope = null): void;
+    public function createAccessToken(string $oauthToken, ClientInterface $client, ?UserInterface $user, int $expires, ?string $scope = null): AccessTokenInterface;
 }
