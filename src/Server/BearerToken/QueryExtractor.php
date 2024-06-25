@@ -16,6 +16,10 @@ class QueryExtractor implements ExtractorInterface
             return null;
         }
 
+        if (!is_string($token)) {
+            return null;
+        }
+
         if ($removeFromRequest) {
             $request->query->remove(self::QUERY_NAME);
         }

@@ -6,6 +6,9 @@ namespace OAuth\Utils;
 
 class RedirectUri
 {
+    /**
+     * @param array<int, string> $storedUris
+     */
     public static function validate(string $inputUri, array $storedUris): bool
     {
         if (!$inputUri || !$storedUris) {

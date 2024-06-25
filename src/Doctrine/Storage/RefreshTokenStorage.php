@@ -15,6 +15,9 @@ class RefreshTokenStorage implements RefreshTokenStorageInterface
 {
     private RefreshTokenRepositoryInterface $repository;
 
+    /**
+     * @param class-string $className
+     */
     public function __construct(
         private readonly EntityManagerInterface $em,
         string $className

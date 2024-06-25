@@ -24,6 +24,9 @@ class CustomGrantExtension implements GrantExtensionInterface
         $this->extensions[$grantType] = $extension;
     }
 
+    /**
+     * @return array<string, GrantExtensionInterface>
+     */
     public function getExtensions(): array
     {
         return $this->extensions;

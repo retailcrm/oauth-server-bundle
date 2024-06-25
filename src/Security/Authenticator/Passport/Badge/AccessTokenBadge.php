@@ -9,6 +9,9 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\BadgeInterface;
 
 class AccessTokenBadge implements BadgeInterface
 {
+    /**
+     * @param array<int, string> $roles
+     */
     public function __construct(
         private readonly AccessTokenInterface $accessToken,
         private readonly array $roles
@@ -25,6 +28,9 @@ class AccessTokenBadge implements BadgeInterface
         return $this->accessToken;
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function getRoles(): array
     {
         return $this->roles;

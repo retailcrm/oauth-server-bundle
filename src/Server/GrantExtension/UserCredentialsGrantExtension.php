@@ -14,10 +14,14 @@ use Symfony\Component\PasswordHasher\LegacyPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class UserCredentialsGrantExtension implements GrantExtensionInterface
 {
+    /**
+     * @param UserProviderInterface<UserInterface> $userProvider
+     */
     public function __construct(
         private readonly UserProviderInterface $userProvider,
         private readonly PasswordHasherFactoryInterface $passwordHasherFactory,
@@ -43,10 +47,10 @@ class UserCredentialsGrantExtension implements GrantExtensionInterface
         $encoder = $this->passwordHasherFactory->getPasswordHasher($user);
 
         if ($user instanceof LegacyPasswordAuthenticatedUserInterface && $encoder instanceof LegacyPasswordHasherInterface) {
-            if (!$encoder->verify($user->getPassword(), $input['password'], $user->getSalt())) {
+            if (!$encoder->verify((string) $user->getPassword(), $input['password'], $user->getSalt())) {
                 throw new OAuthServerException(Response::HTTP_BAD_REQUEST, ErrorCode::ERROR_INVALID_GRANT, 'Invalid username and password combination');
             }
-        } elseif (!$encoder->verify($user->getPassword(), $input['password'])) {
+        } elseif (!$encoder->verify((string) $user->getPassword(), $input['password'])) {
             throw new OAuthServerException(Response::HTTP_BAD_REQUEST, ErrorCode::ERROR_INVALID_GRANT, 'Invalid username and password combination');
         }
 

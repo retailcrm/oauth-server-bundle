@@ -26,8 +26,12 @@ class Config
     private const DEFAULT_SUPPORTED_SCOPES = null;
     private const DEFAULT_RESPONSE_EXTRA_HEADERS = [];
 
+    /** @var array<string, mixed> */
     protected array $conf;
 
+    /**
+     * @param array<string, mixed> $config
+     */
     public function __construct(array $config = [])
     {
         $this->conf = [

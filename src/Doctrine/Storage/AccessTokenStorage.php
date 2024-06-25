@@ -15,6 +15,9 @@ class AccessTokenStorage implements AccessTokenStorageInterface
 {
     private AccessTokenRepositoryInterface $repository;
 
+    /**
+     * @param class-string $className
+     */
     public function __construct(
         private readonly EntityManagerInterface $em,
         string $className

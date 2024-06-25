@@ -347,6 +347,8 @@ class Handler implements HandlerInterface
 
     /**
      * @see http://tools.ietf.org/html/draft-ietf-oauth-v2-20#section-5
+     *
+     * @return array <string, string>
      */
     private function createAccessToken(
         ClientInterface $client,
@@ -394,6 +396,9 @@ class Handler implements HandlerInterface
         return $token;
     }
 
+    /**
+     * @return array<string, string>
+     */
     private function createAuthCode(ClientInterface $client, ?UserInterface $user, string $redirectUri, ?string $scope = null): array
     {
         $token = [

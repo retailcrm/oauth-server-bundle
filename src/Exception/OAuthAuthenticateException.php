@@ -9,6 +9,7 @@ namespace OAuth\Exception;
  */
 class OAuthAuthenticateException extends OAuthServerException
 {
+    /** @var array<string, string> */
     protected array $header;
 
     public function __construct(
@@ -42,9 +43,17 @@ class OAuthAuthenticateException extends OAuthServerException
     /**
      * @see http://tools.ietf.org/html/draft-ietf-httpbis-p1-messaging-17#section-3.2.3
      */
-    private function quote(string $text): string
+    private function quote(?string $text): string
     {
+        if (!$text) {
+            return '';
+        }
+
         $text = preg_replace('~[^\\x21-\\x7E\\x80-\\xFF \\t]~x', '', $text);
+
+        if (!$text) {
+            return '';
+        }
 
         return '"' . addcslashes($text, '"\\') . '"';
     }

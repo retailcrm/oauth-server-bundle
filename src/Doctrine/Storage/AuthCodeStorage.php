@@ -15,10 +15,14 @@ class AuthCodeStorage implements AuthCodeStorageInterface
 {
     private AuthCodeRepositoryInterface $repository;
 
+    /**
+     * @param class-string $className
+     */
     public function __construct(
         private readonly EntityManagerInterface $em,
         string $className
     ) {
+        /** @var class-string $className */
         $repository = $this->em->getRepository($className);
 
         if (!$repository instanceof AuthCodeRepositoryInterface) {

@@ -1,6 +1,6 @@
 parameters:
-    excludePaths:
-        - src/DependencyInjection/Configuration.php
-    level: 5
+    level: 8
     paths:
         - src
+    ignoreErrors:
+        - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\).#'

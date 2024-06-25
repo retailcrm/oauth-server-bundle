@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 class OAuthServerException extends \Exception
 {
     protected int $httpCode;
+
+    /** @var array<string, ?string> */
     protected array $errorData = [];
 
     public function __construct(int $httpCode, string $error, ?string $errorDescription = null)

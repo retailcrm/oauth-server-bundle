@@ -16,12 +16,24 @@ interface ClientInterface extends UserInterface
 
     public function getSecret(): ?string;
 
+    /**
+     * @param array<int, string> $redirectUris
+     */
     public function setRedirectUris(array $redirectUris): self;
 
+    /**
+     * @return array<int, string>
+     */
     public function getRedirectUris(): array;
 
+    /**
+     * @param array<int, string> $grantTypes
+     */
     public function setGrantTypes(array $grantTypes): self;
 
+    /**
+     * @return array<int, string>
+     */
     public function getGrantTypes(): array;
 
     public function checkGrantType(string $grantType): bool;

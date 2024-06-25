@@ -27,6 +27,9 @@ class FormExtractor implements ExtractorInterface
         }
 
         $body = $request->getContent();
+
+        /** @var array<string, string> $parameters */
+        $parameters = [];
         parse_str($body, $parameters);
 
         if (false === array_key_exists(self::FORM_NAME, $parameters)) {
@@ -34,6 +37,10 @@ class FormExtractor implements ExtractorInterface
         }
 
         $token = $parameters[self::FORM_NAME];
+
+        if (!is_string($token)) {
+            return null;
+        }
 
         if ($removeFromRequest && true === $request->request->has(self::FORM_NAME)) {
             $request->request->remove(self::FORM_NAME);

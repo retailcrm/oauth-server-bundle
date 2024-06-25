@@ -6,8 +6,12 @@ namespace OAuth\Utils;
 
 class Uri
 {
+    /**
+     * @param array<string, array<string, string|null>> $params
+     */
     public static function build(string $uri, array $params): string
     {
+        /** @var array<string, string> $parseUrl */
         $parseUrl = parse_url($uri);
 
         foreach ($params as $name => $value) {
