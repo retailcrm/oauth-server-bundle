@@ -18,6 +18,7 @@ return static function (ContainerConfigurator $container): void {
             service('oauth_server.doctrine_storage.refresh_token'),
             service('oauth_server.doctrine_storage.auth_code'),
         ])
+        ->tag('console.command')
         ->alias(CleanCommand::class, 'oauth_server.command.clean')
     ;
 
@@ -26,6 +27,7 @@ return static function (ContainerConfigurator $container): void {
         ->args([
             service('oauth_server.doctrine_storage.client'),
         ])
+        ->tag('console.command')
         ->alias(CreateClientCommand::class, 'oauth_server.command.create_client')
     ;
 };
