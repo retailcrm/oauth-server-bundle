@@ -58,15 +58,15 @@ class OAuthServerExtensionTest extends TestCase
         $this->assertInstanceOf(ChainExtractor::class, $container->get(ChainExtractor::class));
         $this->assertInstanceOf(MtRandTokenGenerator::class, $container->get(MtRandTokenGenerator::class));
 
-        $this->assertInstanceOf(AccessTokenStorage::class, $container->get(AccessTokenStorage::class));
-        $this->assertInstanceOf(RefreshTokenStorage::class, $container->get(RefreshTokenStorage::class));
-        $this->assertInstanceOf(AuthCodeStorage::class, $container->get(AuthCodeStorage::class));
-        $this->assertInstanceOf(ClientStorage::class, $container->get(ClientStorage::class));
+        $this->assertInstanceOf(AccessTokenStorageInterface::class, $container->get(AccessTokenStorage::class));
+        $this->assertInstanceOf(RefreshTokenStorageInterface::class, $container->get(RefreshTokenStorage::class));
+        $this->assertInstanceOf(AuthCodeStorageInterface::class, $container->get(AuthCodeStorage::class));
+        $this->assertInstanceOf(ClientStorageInterface::class, $container->get(ClientStorage::class));
 
-        $this->assertInstanceOf(AccessTokenStorage::class, $container->get(AccessTokenStorageInterface::class));
-        $this->assertInstanceOf(RefreshTokenStorage::class, $container->get(RefreshTokenStorageInterface::class));
-        $this->assertInstanceOf(AuthCodeStorage::class, $container->get(AuthCodeStorageInterface::class));
-        $this->assertInstanceOf(ClientStorage::class, $container->get(ClientStorageInterface::class));
+        $this->assertInstanceOf(AccessTokenStorageInterface::class, $container->get(AccessTokenStorageInterface::class));
+        $this->assertInstanceOf(RefreshTokenStorageInterface::class, $container->get(RefreshTokenStorageInterface::class));
+        $this->assertInstanceOf(AuthCodeStorageInterface::class, $container->get(AuthCodeStorageInterface::class));
+        $this->assertInstanceOf(ClientStorageInterface::class, $container->get(ClientStorageInterface::class));
 
         $this->assertInstanceOf(AuthCodeGrantExtension::class, $container->get(AuthCodeGrantExtension::class));
         $this->assertInstanceOf(ClientCredentialsGrantExtension::class, $container->get(ClientCredentialsGrantExtension::class));

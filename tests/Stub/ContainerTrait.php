@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace OAuth\Tests\Stub;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider;
 use OAuth\DependencyInjection\OAuthServerExtension;
 use OAuth\Tests\Stub\Entity\AccessToken;
@@ -62,12 +63,24 @@ trait ContainerTrait
 
         $entityManagerMock
             ->method('getRepository')
-            ->willReturnCallback(function ($className) {
+            ->willReturnCallback(function ($className) use ($entityManagerMock) {
                 return match ($className) {
-                    AccessToken::class => new AccessTokenRepositoryStub(),
-                    RefreshToken::class => new RefreshTokenRepositoryStub(),
-                    AuthCode::class => new AuthCodeRepositoryStub(),
-                    Client::class => new ClientRepositoryStub(),
+                    AccessToken::class => new AccessTokenRepositoryStub(
+                        $entityManagerMock,
+                        new ClassMetadata(AccessToken::class)
+                    ),
+                    RefreshToken::class => new RefreshTokenRepositoryStub(
+                        $entityManagerMock,
+                        new ClassMetadata(RefreshToken::class)
+                    ),
+                    AuthCode::class => new AuthCodeRepositoryStub(
+                        $entityManagerMock,
+                        new ClassMetadata(AuthCode::class)
+                    ),
+                    Client::class => new ClientRepositoryStub(
+                        $entityManagerMock,
+                        new ClassMetadata(Client::class)
+                    ),
                     default => throw new \InvalidArgumentException('Unknown repository class'),
                 };
             })
