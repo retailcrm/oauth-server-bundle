@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace OAuth\Tests\Stub\Repository;
 
+use Doctrine\ORM\EntityRepository;
 use OAuth\Doctrine\Repository\RefreshTokenRepositoryInterface;
 use OAuth\Model\ClientInterface;
 use OAuth\Model\RefreshTokenInterface;
 use OAuth\Tests\Stub\Entity\RefreshToken;
 
-class RefreshTokenRepositoryStub implements RefreshTokenRepositoryInterface
+class RefreshTokenRepositoryStub extends EntityRepository implements RefreshTokenRepositoryInterface
 {
     /** @var array<string, RefreshTokenInterface> */
     private array $tokens = [];

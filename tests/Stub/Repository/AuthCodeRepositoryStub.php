@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace OAuth\Tests\Stub\Repository;
 
+use Doctrine\ORM\EntityRepository;
 use OAuth\Doctrine\Repository\AuthCodeRepositoryInterface;
 use OAuth\Model\AuthCodeInterface;
 use OAuth\Model\ClientInterface;
 use OAuth\Tests\Stub\Entity\AuthCode;
 
-class AuthCodeRepositoryStub implements AuthCodeRepositoryInterface
+class AuthCodeRepositoryStub extends EntityRepository implements AuthCodeRepositoryInterface
 {
     /** @var array<string, AuthCodeInterface> */
     private array $codes = [];

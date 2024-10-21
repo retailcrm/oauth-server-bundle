@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace OAuth\Tests\Stub\Repository;
 
+use Doctrine\ORM\EntityRepository;
 use OAuth\Doctrine\Repository\AccessTokenRepositoryInterface;
 use OAuth\Model\AccessTokenInterface;
 use OAuth\Model\ClientInterface;
 use OAuth\Tests\Stub\Entity\AccessToken;
 
-class AccessTokenRepositoryStub implements AccessTokenRepositoryInterface
+class AccessTokenRepositoryStub extends EntityRepository implements AccessTokenRepositoryInterface
 {
     /** @var array<string, AccessTokenInterface> */
     private array $tokens = [];

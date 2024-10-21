@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace OAuth\Tests\Stub\Repository;
 
+use Doctrine\ORM\EntityRepository;
 use OAuth\Doctrine\Repository\ClientRepositoryInterface;
 use OAuth\Model\ClientInterface;
 use OAuth\Tests\Stub\Entity\Client;
 
-class ClientRepositoryStub implements ClientRepositoryInterface
+class ClientRepositoryStub extends EntityRepository implements ClientRepositoryInterface
 {
     /** @var array<string, ClientInterface> */
     private array $tokens = [];
