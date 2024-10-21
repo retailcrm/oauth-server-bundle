@@ -166,7 +166,7 @@ class HandlerTest extends TestCase
     public function testVerifyAccessTokenException(
         ?AccessTokenInterface $token,
         string $tokenParam,
-        ?string $scope = null
+        ?string $scope = null,
     ): void {
         $this->accessTokenStorage->method('getAccessToken')->willReturn($token);
 
@@ -569,7 +569,7 @@ class HandlerTest extends TestCase
             ->willReturn($client)
         ;
 
-        $custom = new class() implements GrantExtensionInterface {
+        $custom = new class implements GrantExtensionInterface {
             public function checkGrantExtension(ClientInterface $client, Config $config, string $grantType, array $input): Grant
             {
                 return new Grant(null, null);

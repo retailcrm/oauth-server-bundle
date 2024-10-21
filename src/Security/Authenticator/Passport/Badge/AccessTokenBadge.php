@@ -14,7 +14,7 @@ class AccessTokenBadge implements BadgeInterface
      */
     public function __construct(
         private readonly AccessTokenInterface $accessToken,
-        private readonly array $roles
+        private readonly array $roles,
     ) {
     }
 

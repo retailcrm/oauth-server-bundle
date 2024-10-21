@@ -356,7 +356,7 @@ class Handler implements HandlerInterface
         ?string $scope = null,
         ?int $accessTokenLifetime = null,
         bool $issueRefreshToken = true,
-        ?int $refreshTokenLifetime = null
+        ?int $refreshTokenLifetime = null,
     ): array {
         if (null === $accessTokenLifetime) {
             $accessTokenLifetime = (int) $this->config->getVariable(Config::CONFIG_ACCESS_LIFETIME);

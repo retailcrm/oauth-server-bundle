@@ -27,7 +27,7 @@ class OAuthAuthenticator extends AbstractAuthenticator
     public function __construct(
         private readonly UserCheckerInterface $userChecker,
         private readonly Handler $handler,
-        private readonly Config $config
+        private readonly Config $config,
     ) {
     }
 

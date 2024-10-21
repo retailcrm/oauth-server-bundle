@@ -23,7 +23,7 @@ class CleanCommand extends Command
     public function __construct(
         private readonly AccessTokenStorageInterface $accessTokenStorage,
         private readonly RefreshTokenStorageInterface $refreshTokenStorage,
-        private readonly AuthCodeStorageInterface $authCodeStorage
+        private readonly AuthCodeStorageInterface $authCodeStorage,
     ) {
         parent::__construct();
     }
