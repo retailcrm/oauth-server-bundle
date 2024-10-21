@@ -20,7 +20,7 @@ class RefreshTokenStorage implements RefreshTokenStorageInterface
      */
     public function __construct(
         private readonly EntityManagerInterface $em,
-        string $className
+        string $className,
     ) {
         $repository = $this->em->getRepository($className);
 

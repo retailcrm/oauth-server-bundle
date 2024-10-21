@@ -20,7 +20,7 @@ class AccessTokenStorage implements AccessTokenStorageInterface
      */
     public function __construct(
         private readonly EntityManagerInterface $em,
-        string $className
+        string $className,
     ) {
         $repository = $this->em->getRepository($className);
 

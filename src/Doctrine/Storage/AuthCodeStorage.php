@@ -20,7 +20,7 @@ class AuthCodeStorage implements AuthCodeStorageInterface
      */
     public function __construct(
         private readonly EntityManagerInterface $em,
-        string $className
+        string $className,
     ) {
         /** @var class-string $className */
         $repository = $this->em->getRepository($className);
