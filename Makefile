@@ -1,4 +1,4 @@
-PHP=php
+PHP=docker-compose run --rm --no-deps php
 
 vendor: composer.json
 	@$(PHP) composer install -o -n --no-ansi
@@ -13,4 +13,4 @@ php-cs: vendor
 phpstan: vendor
 	@$(PHP) vendor/bin/phpstan analyse
 
-check: php-cs phpunit
+check: php-cs phpstan phpunit
