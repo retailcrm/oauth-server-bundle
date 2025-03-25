@@ -5,16 +5,20 @@ declare(strict_types=1);
 namespace OAuth\Server\GrantExtension;
 
 use OAuth\Enum\ErrorCode;
+use OAuth\Event\VerifyTokenEvent;
 use OAuth\Exception\OAuthServerException;
 use OAuth\Model\ClientInterface;
 use OAuth\Server\Config;
 use OAuth\Server\Storage\RefreshTokenStorageInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class RefreshTokenGrantExtension implements GrantExtensionInterface
 {
-    public function __construct(private readonly RefreshTokenStorageInterface $storage)
-    {
+    public function __construct(
+        private readonly EventDispatcherInterface $dispatcher,
+        private readonly RefreshTokenStorageInterface $storage,
+    ) {
     }
 
     public function checkGrantExtension(ClientInterface $client, Config $config, string $grantType, array $input): Grant
@@ -32,6 +36,8 @@ class RefreshTokenGrantExtension implements GrantExtensionInterface
         if ($token->hasExpired()) {
             throw new OAuthServerException(Response::HTTP_BAD_REQUEST, ErrorCode::ERROR_INVALID_GRANT, 'Refresh token has expired');
         }
+
+        $this->dispatcher->dispatch(new VerifyTokenEvent($token));
 
         $this->storage->unsetRefreshToken($token->getToken());
 

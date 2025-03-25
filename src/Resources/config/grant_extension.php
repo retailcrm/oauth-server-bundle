@@ -30,6 +30,7 @@ return static function (ContainerConfigurator $container): void {
     $services
         ->set('oauth_server.grant_extension.refresh_token', RefreshTokenGrantExtension::class)
         ->args([
+            service('event_dispatcher'),
             service('oauth_server.doctrine_storage.refresh_token'),
         ])
         ->alias(RefreshTokenGrantExtension::class, 'oauth_server.grant_extension.refresh_token')
