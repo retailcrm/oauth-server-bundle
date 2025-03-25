@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace OAuth\Tests\Server;
 
+use OAuth\Event\AfterCreateAccessTokenEvent;
 use OAuth\Event\AfterGrantAccessEvent;
+use OAuth\Event\VerifyTokenEvent;
 use OAuth\Exception\OAuthAuthenticateException;
 use OAuth\Exception\OAuthServerException;
 use OAuth\Model\AccessTokenInterface;
@@ -81,7 +83,7 @@ class HandlerTest extends TestCase
             $this->authCodeStorage,
             new AuthCodeGrantExtension($this->authCodeStorage),
             new ClientCredentialsGrantExtension(),
-            new RefreshTokenGrantExtension($this->refreshTokenStorage),
+            new RefreshTokenGrantExtension($this->eventDispatcher, $this->refreshTokenStorage),
             new UserCredentialsGrantExtension($this->userProviderInterface, $this->passwordHasherFactory),
             $this->customGrantExtension,
         );
@@ -105,6 +107,8 @@ class HandlerTest extends TestCase
         $token = $this->manager->verifyAccessToken('my_token');
         $this->assertNotNull($token);
         $this->assertEquals('my_token', $token->getToken());
+
+        $this->assertEquals([VerifyTokenEvent::class], $this->eventDispatcher->getOrphanedEvents());
     }
 
     public static function provideVerifyAccessTokenException(): iterable
@@ -173,6 +177,8 @@ class HandlerTest extends TestCase
         $this->expectException(OAuthAuthenticateException::class);
 
         $this->manager->verifyAccessToken($tokenParam, $scope);
+
+        $this->assertEquals([], $this->eventDispatcher->getOrphanedEvents());
     }
 
     public static function provideGetBearerToken(): iterable
@@ -380,7 +386,7 @@ class HandlerTest extends TestCase
         $response = $this->manager->grantAccessToken($request);
 
         $this->assertEquals($expectedResponse, json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR));
-        $this->assertEquals([AfterGrantAccessEvent::class], $this->eventDispatcher->getOrphanedEvents());
+        $this->assertEquals([AfterGrantAccessEvent::class, AfterCreateAccessTokenEvent::class], $this->eventDispatcher->getOrphanedEvents());
     }
 
     public static function provideGrantAccessTokenUserCredentials(): iterable
@@ -433,7 +439,7 @@ class HandlerTest extends TestCase
             'scope' => null,
             'refresh_token' => 'refresh_token',
         ], json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR));
-        $this->assertEquals([AfterGrantAccessEvent::class], $this->eventDispatcher->getOrphanedEvents());
+        $this->assertEquals([AfterGrantAccessEvent::class, AfterCreateAccessTokenEvent::class], $this->eventDispatcher->getOrphanedEvents());
     }
 
     public static function provideGrantAccessTokenClientCredentials(): iterable
@@ -478,7 +484,7 @@ class HandlerTest extends TestCase
             'token_type' => 'bearer',
             'scope' => null,
         ], json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR));
-        $this->assertEquals([AfterGrantAccessEvent::class], $this->eventDispatcher->getOrphanedEvents());
+        $this->assertEquals([AfterGrantAccessEvent::class, AfterCreateAccessTokenEvent::class], $this->eventDispatcher->getOrphanedEvents());
     }
 
     public static function provideGrantAccessTokenRefreshToken(): iterable
@@ -537,7 +543,7 @@ class HandlerTest extends TestCase
             'scope' => 'read',
             'refresh_token' => 'refresh_token',
         ], json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR));
-        $this->assertEquals([AfterGrantAccessEvent::class], $this->eventDispatcher->getOrphanedEvents());
+        $this->assertEquals([VerifyTokenEvent::class, AfterGrantAccessEvent::class, AfterCreateAccessTokenEvent::class], $this->eventDispatcher->getOrphanedEvents());
     }
 
     public static function provideGrantAccessTokenCustom(): iterable
@@ -595,7 +601,7 @@ class HandlerTest extends TestCase
             'scope' => null,
             'refresh_token' => 'refresh_token',
         ], json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR));
-        $this->assertEquals([AfterGrantAccessEvent::class], $this->eventDispatcher->getOrphanedEvents());
+        $this->assertEquals([AfterGrantAccessEvent::class, AfterCreateAccessTokenEvent::class], $this->eventDispatcher->getOrphanedEvents());
     }
 
     public static function provideGrantAccessTokenException(): iterable

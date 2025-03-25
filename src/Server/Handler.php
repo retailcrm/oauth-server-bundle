@@ -6,7 +6,9 @@ namespace OAuth\Server;
 
 use OAuth\Enum\ErrorCode;
 use OAuth\Enum\TransportMethod;
+use OAuth\Event\AfterCreateAccessTokenEvent;
 use OAuth\Event\AfterGrantAccessEvent;
+use OAuth\Event\VerifyTokenEvent;
 use OAuth\Exception\OAuthAuthenticateException;
 use OAuth\Exception\OAuthRedirectException;
 use OAuth\Exception\OAuthServerException;
@@ -114,6 +116,8 @@ class Handler implements HandlerInterface
         if ($scope && (!$token->getScope() || !$this->checkScope($scope, $token->getScope()))) {
             throw new OAuthAuthenticateException(Response::HTTP_FORBIDDEN, $tokenType, $realm, ErrorCode::ERROR_INSUFFICIENT_SCOPE, 'The request requires higher privileges than provided by the access token.', $scope);
         }
+
+        $this->eventDispatcher->dispatch(new VerifyTokenEvent($token));
 
         return $token;
     }
@@ -392,6 +396,13 @@ class Handler implements HandlerInterface
                 $scope
             );
         }
+
+        $this->eventDispatcher->dispatch(new AfterCreateAccessTokenEvent(
+            $client,
+            $user,
+            $token['access_token'],
+            $token['refresh_token'] ?? null,
+        ));
 
         return $token;
     }
